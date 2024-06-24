@@ -8,6 +8,8 @@ const server = http.createServer(app);
 
 const io = new Server(server);
 
+// app.use(express.static('build'));
+
 const userSocketMap = {};
 const getAllConnectedClients = (roomId) => {
   return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
@@ -62,4 +64,4 @@ io.on("connection", (socket) => {
 });
 
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`Server is runnint on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

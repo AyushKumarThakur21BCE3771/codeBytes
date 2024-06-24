@@ -10,6 +10,7 @@ import {
   useParams,
 } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import logo from "../images/logo.png";
 
 function EditorPage() {
   const [clients, setClients] = useState([]);
@@ -79,7 +80,7 @@ function EditorPage() {
   const copyRoomId = async () => {
     try {
       await navigator.clipboard.writeText(roomId);
-      toast.success(`roomIs is copied`);
+      toast.success(`room ID is copied`);
     } catch (error) {
       console.log(error);
       toast.error("unable to copy the room Id");
@@ -91,54 +92,37 @@ function EditorPage() {
   };
 
   return (
-    <div className="container-fluid vh-100">
-      <div className="row h-100">
-        {/* client panel */}
-        <div
-          className="col-md-2 bg-dark text-light d-flex flex-column h-100"
-          style={{ boxShadow: "2px 0px 4px rgba(0, 0, 0, 0.1)" }}
-        >
-          <img
-            src="/images/codecast.png"
-            alt="Logo"
-            className="img-fluid mx-auto"
-            style={{ maxWidth: "150px", marginTop: "-43px" }}
-          />
-          <hr style={{ marginTop: "-3rem" }} />
-
-          {/* Client list container */}
-          <div className="d-flex flex-column flex-grow-1 overflow-auto">
-            <span className="mb-2">Members</span>
+    <div className="mainWrap">
+      <div className="aside">
+        <div className="asideInner">
+          <div className="logo">
+            <img className="logoImage" src={logo} alt="logo" />
+            <h5>Code Bytes</h5>
+          </div>
+          <h5 className="activeUsers">Active Users</h5>
+          <div className="clientsList">
             {clients.map((client) => (
               <Client key={client.socketId} username={client.username} />
             ))}
           </div>
-
-          <hr />
-          {/* Buttons */}
-          <div className="mt-auto ">
-            <button className="btn btn-success" onClick={copyRoomId}>
-              Copy Room ID
-            </button>
-            <button
-              className="btn btn-danger mt-2 mb-2 px-3 btn-block"
-              onClick={leaveRoom}
-            >
-              Leave Room
-            </button>
-          </div>
         </div>
-
-        {/* Editor panel */}
-        <div className="col-md-10 text-light d-flex flex-column h-100 ">
-          <Editor
-            socketRef={socketRef}
-            roomId={roomId}
-            onCodeChange={(code) => {
-              codeRef.current = code;
-            }}
-          />
+        <div className="buttons">
+          <button className="btn" id="copyBtn" onClick={copyRoomId}>
+            Copy ROOM ID
+          </button>
+          <button className="btn" id="leaveBtn" onClick={leaveRoom}>
+            Leave
+          </button>
         </div>
+      </div>
+      <div className="editorWrap">
+        <Editor
+          socketRef={socketRef}
+          roomId={roomId}
+          onCodeChange={(code) => {
+            codeRef.current = code;
+          }}
+        />
       </div>
     </div>
   );
